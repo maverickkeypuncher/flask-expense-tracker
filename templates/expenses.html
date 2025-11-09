@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head><title>Expenses</title></head>
+<body>
+  <h2>Enter Expenses for {{ session['username'] }}</h2>
+  <form method="POST">
+    <table border="1">
+      <tr>
+        <th>Date</th>
+        {% for cat in categories %}
+          <th>{{ cat }}</th>
+        {% endfor %}
+      </tr>
+      {% for day in days %}
+        <tr>
+          <td>{{ day }}</td>
+          {% for cat in categories %}
+            <td><input name="{{ day }}_{{ cat }}" size="5"></td>
+          {% endfor %}
+        </tr>
+      {% endfor %}
+    </table>
+    <input type="submit" value="Save">
+  </form>
+</body>
+</html>
