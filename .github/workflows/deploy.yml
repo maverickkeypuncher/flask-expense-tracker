@@ -18,8 +18,8 @@ jobs:
 
     - name: Build and push image with nerdctl
       run: |
-        sudo nerdctl build -t docker.io/jaymaverick/flask-expense-app:${{ github.sha }} .
-        sudo nerdctl push docker.io/jaymaverick/flask-expense-app:${{ github.sha }}
+        nerdctl build -t docker.io/jaymaverick/flask-expense-app:${{ github.sha }} .
+        nerdctl push docker.io/jaymaverick/flask-expense-app:${{ github.sha }}
 
     - name: Trigger Kubernetes rollout
       env:
