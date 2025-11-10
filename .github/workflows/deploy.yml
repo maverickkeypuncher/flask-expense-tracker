@@ -1,4 +1,4 @@
-name: CI/CD with nerdctl and Docker Hub for flask app DJ
+name: CI/CD with nerdctl and Docker Hub for flask app DJ1
 
 on:
   push:
