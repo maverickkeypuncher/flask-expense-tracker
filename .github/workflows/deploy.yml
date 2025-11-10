@@ -1,0 +1,29 @@
+name: CI/CD with Docker Hub
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build-push-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Log in to Docker Hub
+      run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+
+    - name: Build and push Docker image
+      run: |
+        docker build -t docker.io/jaymaverick/flask-expense-app:${{ github.sha }} .
+        docker push docker.io/jaymaverick/flask-expense-app:${{ github.sha }}
+
+    - name: Trigger Kubernetes rollout
+      env:
+        KUBECONFIG: ${{ secrets.KUBECONFIG }}
+      run: |
+        echo "$KUBECONFIG" | base64 -d > kubeconfig.yaml
+        export KUBECONFIG=kubeconfig.yaml
+        kubectl set image deployment/flask-expense-deployment flask-expense-app=docker.io/jaymaverick/flask-expense-app:${{ github.sha }} -n app
