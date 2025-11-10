@@ -18,8 +18,8 @@ jobs:
 
     - name: Build and push image with nerdctl
       run: |
-        sudo nerdctl build -t docker.io/jaymaverick/flask-expense-app:${{ github.sha }} .
-        sudo nerdctl push docker.io/jaymaverick/flask-expense-app:${{ github.sha }}
+        sudo /usr/local/bin/nerdctl build -t docker.io/jaymaverick/flask-expense-app:${{ github.sha }} .
+        sudo /usr/local/bin/nerdctl push docker.io/jaymaverick/flask-expense-app:${{ github.sha }}
 
     - name: Trigger Kubernetes rollout
       env:
@@ -27,4 +27,4 @@ jobs:
       run: |
         echo "$KUBECONFIG" | base64 -d > kubeconfig.yaml
         export KUBECONFIG=kubeconfig.yaml
-        kubectl set image deployment/flask-expense-deployment flask-expense-app=docker.io/jaymaverick/flask-expense-app:${{ github.sha }} -n app
+        /usr/bin/kubectl set image deployment/flask-expense-deployment flask-expense-app=docker.io/jaymaverick/flask-expense-app:${{ github.sha }} -n app
